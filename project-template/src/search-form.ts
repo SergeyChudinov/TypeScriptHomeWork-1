@@ -32,7 +32,7 @@ export function renderSearchFormBlock (arrivalDate, departureDate) {
     arrivalDateEnd = `${year}-${month}-${dateEnd}`;
   }
 
-  if (finishDate < nowDate) {
+  if (finishDate < startDate || finishDate < nowDate) {
     departureDate = arrivalDate;
   }
   
