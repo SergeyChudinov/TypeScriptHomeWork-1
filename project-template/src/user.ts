@@ -20,4 +20,27 @@ export function renderUserBlock(name, avatar, favoriteItemsAmount) {
     </div>
     `
   )
+  setUser(name, avatar);
+  setFavoritesAmount(favoriteItemsAmount);
+  getUserData('user');
+  getFavoritesAmount('favoriteItemsAmount');
+}
+
+function setUser(username, avatarUrl) {
+  const user = {
+    username,
+    avatarUrl
+  }
+  const serializedUser = JSON.stringify(user);
+  localStorage.setItem('user', serializedUser);
+}
+function setFavoritesAmount(favoriteItemsAmount) {
+  localStorage.setItem('favoriteItemsAmount', favoriteItemsAmount);
+}
+
+function getUserData(key: unknown) {
+  console.log(localStorage.getItem(key) );
+}
+function getFavoritesAmount(key) {
+  console.log(localStorage.getItem(key) );
 }

@@ -1,6 +1,10 @@
 import { renderBlock } from './lib.js'
 
-export function renderSearchFormBlock (arrivalDate, departureDate) {
+interface SearchFormData {
+  (arrivalDate: string, departureDate: string) : void
+}
+
+export const renderSearchFormBlock: SearchFormData = (arrivalDate, departureDate) => {
   function getLastDayOfMonth(year, month) {
     const date = new Date(year, month, 0);
     return date.getDate();
@@ -45,7 +49,7 @@ export function renderSearchFormBlock (arrivalDate, departureDate) {
         <div class="row">
           <div>
             <label for="city">Город</label>
-            <input id="city" type="text" disabled value="Санкт-Петербург" />
+            <input id="city" type="text"  value="Санкт-Петербург" />
             <input type="hidden" disabled value="59.9386,30.3141" />
           </div>
           <!--<div class="providers">
@@ -74,4 +78,59 @@ export function renderSearchFormBlock (arrivalDate, departureDate) {
     </form>
     `
   )
+}
+export const callback = (error, array) => {
+  if (error == null && Array.isArray(array)) {
+    console.log(array)
+  } else {
+    console.log(error)
+  }
+}
+
+export function searchHandler(callback) {
+  const cityInp = document.querySelector('#city');
+  const arrivalDateInp = document.querySelector('#check-in-date');
+  const departureDateInp = document.querySelector('#check-out-date');
+  const maxPriceInp = document.querySelector('#max-price');
+
+  let city, arrivalDate, departureDate, maxPrice;
+
+  cityInp.addEventListener('change', () => {
+    city = cityInp.value;
+    serch(city, arrivalDate, departureDate, maxPrice);
+  });
+  arrivalDateInp.addEventListener('change', () => {
+    arrivalDate = arrivalDateInp.value;
+    serch(city, arrivalDate, departureDate, maxPrice);
+    // if (arrivalDateInp.value > departureDateInp.value) {
+    //   renderSearchFormBlock(arrivalDate, departureDateInp.value)
+    // }
+  });
+  departureDateInp.addEventListener('change', () => {
+    departureDate = departureDateInp.value;
+    serch(city, arrivalDate, departureDate, maxPrice);
+    // if (arrivalDateInp.value > departureDateInp.value) {
+    //   renderSearchFormBlock(arrivalDate, departureDateInp.value)
+    // }
+  });
+  maxPriceInp.addEventListener('change', () => {
+    maxPrice = maxPriceInp.value;
+    serch(city, arrivalDate, departureDate, maxPrice);
+  });
+
+  // let error, array
+  setTimeout(function log() {
+    const number = Math.floor(Math.random() * 2);
+    if (number == 0) {
+      callback(null, [])
+    } else if (number == 1) {
+      callback('error')
+    }
+  }, 3000)
+}
+
+function serch(city, arrivalDate, departureDate, maxPrice) {
+  if (city && arrivalDate && departureDate && maxPrice) {
+    console.log('Город', city, 'Дата заезда', arrivalDate, 'Дата выезда', departureDate, 'Макс. цена суток', maxPrice);
+  }
 }
